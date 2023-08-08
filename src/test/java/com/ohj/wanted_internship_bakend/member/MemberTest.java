@@ -10,6 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -35,14 +38,12 @@ public class MemberTest {
         //Given
         Member member = new Member().builder()
                 .username("oh")
-                .password("1234")
+                .password("12345678")
                 .build();
+        memberService.join(member);
+        Optional<Member> findMember = memberService.findUser(member.getUsername());
+        assertEquals(member.getUsername(), findMember.get().getUsername());
 
-        try {
-            memberService.join(member);
-        } catch (Exception e) {
-            System.out.println("회원 등록 실패 - 비밀번호 길이가 너무 짧습니다.");
-        }
     }
 
     @Test
