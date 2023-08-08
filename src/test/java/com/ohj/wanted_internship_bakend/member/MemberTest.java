@@ -60,8 +60,10 @@ public class MemberTest {
                 .build();
         memberService.join(member1);
         assertThrows(AlreadyJoinException.class, () -> memberService.join(member2));
-        //Optional<Member> findMember = memberService.findUser(member.getUsername());
-        //assertEquals(member.getUsername(), findMember.get().getUsername());
     }
+
+
+    @Test
+    public void jwt_기반_로그인() throws Exception {}
 
 }
