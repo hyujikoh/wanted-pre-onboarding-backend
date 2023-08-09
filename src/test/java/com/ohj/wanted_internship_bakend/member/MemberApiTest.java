@@ -1,10 +1,6 @@
 package com.ohj.wanted_internship_bakend.member;
 
-import com.ohj.wanted_internship_bakend.app.common.BaseResponse;
-import com.ohj.wanted_internship_bakend.app.restapi.member.domain.Member;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.MemberReq;
-import com.ohj.wanted_internship_bakend.app.restapi.member.exception.AlreadyJoinException;
-import com.ohj.wanted_internship_bakend.app.restapi.member.exception.UserNotExistException;
 import com.ohj.wanted_internship_bakend.app.restapi.member.repository.MemberRepository;
 import com.ohj.wanted_internship_bakend.app.restapi.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,22 +15,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * Author : hyujikoh
- * CreatedAt : 2023-08-08
- * 회원 테스트코드
+ * CreatedAt : 2023-08-09
+ * Desc : 엔드포인트 테스트 클래스
  */
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Transactional
 @ActiveProfiles("test")
-public class MemberTest {
+public class MemberApiTest {
     @Autowired
     MemberService memberService;
 
@@ -49,38 +41,9 @@ public class MemberTest {
                 .build();
         memberService.join(memberReq);
     }
-    @Test
-    public void 회원가입() throws Exception{
-        //Given
-        MemberReq memberReq = new MemberReq().builder()
-                .userEmail("ohj@naver.com")
-                .password("12345678")
-                .build();
-        memberService.join(memberReq);
-        Optional<Member> findMember = memberService.findUser(memberReq.getUserEmail());
-        assertEquals(memberReq.getUserEmail(), findMember.get().getUserEmail());
-
-    }
 
     @Test
-    public void 중복된정보로_회원가입시_오류처리() throws Exception{
-        //Given
-        MemberReq memberReq1 = new MemberReq().builder()
-                .userEmail("ohj@naver.com")
-                .password("12345678")
-                .build();
-
-        MemberReq memberReq2 = new MemberReq().builder()
-                .userEmail("ohj@naver.com")
-                .password("12345678")
-                .build();
-        memberService.join(memberReq1);
-        assertThrows(AlreadyJoinException.class, () -> memberService.join(memberReq2));
-    }
-
-
-    @Test
-    void 회원가입_api_성공(){
+    void 회원가입_성공_api(){
         //http localhost:8080/hello?name=Spring
         TestRestTemplate rest = new TestRestTemplate();
 
@@ -116,27 +79,4 @@ public class MemberTest {
 
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
-
-    @Test
-    void 로그인_성공(){
-        MemberReq memberReq = new MemberReq().builder()
-                .userEmail("oh@naver.com")
-                .password("12345678")
-                .build();
-
-        Member member = memberService.logIn(memberReq);
-
-        assertThat(member.getUserEmail()).isEqualTo(memberReq.getUserEmail());
-    }
-
-    @Test
-    void 로그인_실패(){
-        MemberReq memberReq = new MemberReq().builder()
-                .userEmail("oh@naver.com")
-                .password("12345678124124")
-                .build();
-
-        assertThrows(UserNotExistException.class, () -> memberService.logIn(memberReq));
-    }
-
 }
