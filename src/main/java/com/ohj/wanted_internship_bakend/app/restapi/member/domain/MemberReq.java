@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 /**
@@ -19,6 +20,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class MemberReq {
 
+    @Email(message = "Invalid email format")
     private String userEmail;
 
     @NotNull

@@ -43,7 +43,7 @@ public class MemberTest {
     public void 회원가입() throws Exception{
         //Given
         MemberReq memberReq = new MemberReq().builder()
-                .userEmail("oh")
+                .userEmail("oh@naver.com")
                 .password("12345678")
                 .build();
         memberService.join(memberReq);
@@ -56,12 +56,12 @@ public class MemberTest {
     public void 중복된정보로_회원가입시_오류처리() throws Exception{
         //Given
         MemberReq memberReq1 = new MemberReq().builder()
-                .userEmail("oh")
+                .userEmail("oh@naver.com")
                 .password("1234")
                 .build();
 
         MemberReq memberReq2 = new MemberReq().builder()
-                .userEmail("oh")
+                .userEmail("oh@naver.com")
                 .password("1234")
                 .build();
         memberService.join(memberReq1);
@@ -70,14 +70,14 @@ public class MemberTest {
 
 
     @Test
-    void joinApi(){
+    void 회원가입_api_성공(){
         //http localhost:8080/hello?name=Spring
         TestRestTemplate rest = new TestRestTemplate();
 
         // Given
         String url = "http://localhost:8040/join";
         MemberReq memberReq = new MemberReq().builder()
-                .userEmail("testUser")
+                .userEmail("testUser@gmail.com")
                 .password("testPa1234")
                 .build();
         ResponseEntity<String> res =
@@ -91,7 +91,7 @@ public class MemberTest {
      * 비밀번호 8자 미만 일경우 API 테스트 실패
      */
     @Test
-    void joinApiFail(){
+    void 회원가입_실패_api(){
         //http localhost:8080/hello?name=Spring
         TestRestTemplate rest = new TestRestTemplate();
 
