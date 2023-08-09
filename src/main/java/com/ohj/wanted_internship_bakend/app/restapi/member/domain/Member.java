@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import net.bytebuddy.implementation.bind.annotation.Super;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -32,14 +29,21 @@ public class Member {
     private Long id;
 
     @Column(unique = true)
-    private String username;
+    private String userEmail;
 
     @JsonIgnore
-    @NotNull
-    @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
+
+    @Transient
+    private String accessToken;
 
     public void setPassword(String encode) {
         this.password = encode;
     }
+
+    public void setAccessToken(String jwt) {
+        this.accessToken = jwt;
+    }
+
+
 }
