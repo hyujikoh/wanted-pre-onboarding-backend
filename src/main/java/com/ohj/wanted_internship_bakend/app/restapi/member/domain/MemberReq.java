@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 public class MemberReq {
 
     @Email(message = "Invalid email format")
+    @NotNull
     private String userEmail;
 
     @NotNull

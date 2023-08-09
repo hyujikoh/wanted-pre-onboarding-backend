@@ -33,18 +33,8 @@ public class MemberApiTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @BeforeEach
-    public void beforeEach() {
-        MemberReq memberReq = new MemberReq().builder()
-                .userEmail("oh@naver.com")
-                .password("12345678")
-                .build();
-        memberService.join(memberReq);
-    }
-
     @Test
     void 회원가입_성공_api(){
-        //http localhost:8080/hello?name=Spring
         TestRestTemplate rest = new TestRestTemplate();
 
         // Given
@@ -65,7 +55,6 @@ public class MemberApiTest {
      */
     @Test
     void 회원가입_실패_api(){
-        //http localhost:8080/hello?name=Spring
         TestRestTemplate rest = new TestRestTemplate();
 
         // Given
@@ -78,5 +67,45 @@ public class MemberApiTest {
                 rest.postForEntity(url, memberReq, String.class);
 
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void 로그인_성공_api(){
+        TestRestTemplate rest = new TestRestTemplate();
+
+        MemberReq joinReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
+        memberService.join(joinReq);
+        // Given
+        String url = "http://localhost:8040/logIn";
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
+
+        ResponseEntity<String> res =
+                rest.postForEntity(url, memberReq, String.class);
+
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(res.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE)).startsWith(MediaType.APPLICATION_JSON_VALUE);
+    }
+
+    @Test
+    void 로그인_실패_유효성_api(){
+        TestRestTemplate rest = new TestRestTemplate();
+
+        // Given
+        String url = "http://localhost:8040/logIn";
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("1234")
+                .build();
+        ResponseEntity<String> res =
+                rest.postForEntity(url, memberReq, String.class);
+
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+
     }
 }

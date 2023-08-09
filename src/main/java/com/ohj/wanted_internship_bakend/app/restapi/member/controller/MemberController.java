@@ -48,7 +48,7 @@ public class MemberController {
      */
     @ResponseBody
     @PostMapping("/logIn")
-    public BaseResponse<Member> logIn(@RequestBody @Valid MemberReq memberReq) {
+    public BaseResponse<Member> logIn(@Valid @RequestBody MemberReq memberReq) {
         try {
             return new BaseResponse<>(memberService.logIn(memberReq));
         } catch (BaseException exception) {

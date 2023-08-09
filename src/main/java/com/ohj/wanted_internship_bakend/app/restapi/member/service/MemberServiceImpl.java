@@ -77,10 +77,14 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member logIn(MemberReq memberReq) {
         memberReq.setPassword(SHA256.encrypt(memberReq.getPassword()));
+
         Optional<Member> member = memberRepository.findByUserEmailAndPassword(memberReq.getUserEmail(), memberReq.getPassword());
+
         if (member.isEmpty()) {
             throw new UserNotExistException();
         }
+        generateAccessToken(member.get());
+
         return member.get();
     }
 }
