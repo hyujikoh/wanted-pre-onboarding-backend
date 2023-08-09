@@ -3,6 +3,7 @@ package com.ohj.wanted_internship_bakend.app.restapi.member.service;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.Member;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.MemberReq;
 import com.ohj.wanted_internship_bakend.app.restapi.member.exception.AlreadyJoinException;
+import com.ohj.wanted_internship_bakend.app.restapi.member.exception.UserNotExistException;
 import com.ohj.wanted_internship_bakend.app.restapi.member.repository.MemberRepository;
 import com.ohj.wanted_internship_bakend.app.util.JwtManager;
 import com.ohj.wanted_internship_bakend.app.util.SHA256;
@@ -73,5 +74,13 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.findByUserEmail(name);
     }
 
-
+    @Override
+    public Member logIn(MemberReq memberReq) {
+        memberReq.setPassword(SHA256.encrypt(memberReq.getPassword()));
+        Optional<Member> member = memberRepository.findByUserEmailAndPassword(memberReq.getUserEmail(), memberReq.getPassword());
+        if (member.isEmpty()) {
+            throw new UserNotExistException();
+        }
+        return member.get();
+    }
 }

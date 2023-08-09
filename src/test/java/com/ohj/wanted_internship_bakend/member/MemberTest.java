@@ -4,8 +4,10 @@ import com.ohj.wanted_internship_bakend.app.common.BaseResponse;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.Member;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.MemberReq;
 import com.ohj.wanted_internship_bakend.app.restapi.member.exception.AlreadyJoinException;
+import com.ohj.wanted_internship_bakend.app.restapi.member.exception.UserNotExistException;
 import com.ohj.wanted_internship_bakend.app.restapi.member.repository.MemberRepository;
 import com.ohj.wanted_internship_bakend.app.restapi.member.service.MemberService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,11 +41,19 @@ public class MemberTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @BeforeEach
+    public void beforeEach() {
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
+        memberService.join(memberReq);
+    }
     @Test
     public void 회원가입() throws Exception{
         //Given
         MemberReq memberReq = new MemberReq().builder()
-                .userEmail("oh@naver.com")
+                .userEmail("ohj@naver.com")
                 .password("12345678")
                 .build();
         memberService.join(memberReq);
@@ -56,13 +66,13 @@ public class MemberTest {
     public void 중복된정보로_회원가입시_오류처리() throws Exception{
         //Given
         MemberReq memberReq1 = new MemberReq().builder()
-                .userEmail("oh@naver.com")
-                .password("1234")
+                .userEmail("ohj@naver.com")
+                .password("12345678")
                 .build();
 
         MemberReq memberReq2 = new MemberReq().builder()
-                .userEmail("oh@naver.com")
-                .password("1234")
+                .userEmail("ohj@naver.com")
+                .password("12345678")
                 .build();
         memberService.join(memberReq1);
         assertThrows(AlreadyJoinException.class, () -> memberService.join(memberReq2));
@@ -105,6 +115,28 @@ public class MemberTest {
                 rest.postForEntity(url, memberReq, String.class);
 
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    void 로그인_성공(){
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
+
+        Member member = memberService.logIn(memberReq);
+
+        assertThat(member.getUserEmail()).isEqualTo(memberReq.getUserEmail());
+    }
+
+    @Test
+    void 로그인_실패(){
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678124124")
+                .build();
+
+        assertThrows(UserNotExistException.class, () -> memberService.logIn(memberReq));
     }
 
 }

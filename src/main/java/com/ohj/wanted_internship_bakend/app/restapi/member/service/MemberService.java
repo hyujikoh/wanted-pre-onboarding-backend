@@ -13,4 +13,6 @@ public interface MemberService {
     Member join(MemberReq memberReq);
 
     Optional<Member> findUser(String name);
+
+    Member logIn(MemberReq memberReq);
 }
