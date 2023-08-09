@@ -1,22 +1,22 @@
 package com.ohj.wanted_internship_bakend.app.util;
 
-
-
 import com.ohj.wanted_internship_bakend.app.common.BaseException;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.Member;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import javax.servlet.http.HttpServletRequest;
-import java.security.PublicKey;
 import java.util.Date;
 
-import static com.ohj.wanted_internship_bakend.app.common.BaseResponseStatus.EMPTY_JWT;
 import static com.ohj.wanted_internship_bakend.app.common.BaseResponseStatus.INVALID_JWT;
 
 
+/**
+ * Author : hyujikoh
+ * CreatedAt : 2023-08-08
+ * Desc : JWT 관련 처리 클래스
+ */
 @Service
 public class JwtManager {
 
@@ -32,7 +32,7 @@ public class JwtManager {
         return Jwts.builder()
                 .setHeaderParam("type", "jwt")
                 .claim("id", member.getId())
-                .claim("username", member.getUsername())
+                .claim("username", member.getUserEmail())
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 365 * 3))
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY)

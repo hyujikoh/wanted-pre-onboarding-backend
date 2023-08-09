@@ -1,6 +1,7 @@
 package com.ohj.wanted_internship_bakend.app.restapi.member.service;
 
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.Member;
+import com.ohj.wanted_internship_bakend.app.restapi.member.domain.MemberReq;
 
 import java.util.Optional;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
  * CreatedAt : 2023-08-08
  */
 public interface MemberService {
-    Member join(Member member);
+    Member join(MemberReq memberReq);
 
     Optional<Member> findUser(String name);
 }

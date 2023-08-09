@@ -3,7 +3,9 @@ package com.ohj.wanted_internship_bakend.app.util;
 import java.security.MessageDigest;
 
 /**
- * 암호화 클래스
+ * Author : hyujikoh
+ * CreatedAt : 2023-08-08
+ * Desc : 암호화 처리 클래스
  */
 public class SHA256 {
     public SHA256() {
