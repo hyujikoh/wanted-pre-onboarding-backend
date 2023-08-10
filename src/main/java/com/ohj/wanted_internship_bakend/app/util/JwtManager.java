@@ -31,7 +31,7 @@ public class JwtManager {
         Date now = new Date();
         return Jwts.builder()
                 .setHeaderParam("type", "jwt")
-                .claim("id", member.getId())
+                .claim("id", String.valueOf(member.getId()))
                 .claim("username", member.getUserEmail())
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 365 * 3))
