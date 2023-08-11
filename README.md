@@ -30,3 +30,17 @@
 3. 인터셉터를 통한 로그인 (완료)
 4. CRUD 기반 게시판 글 작성
 5. JWT 오류 발생 경우 에러 던지기(완료)
+
+
+
+
+기술 스택 : Spring boot 2.7.6, JPA, Hibernate, Swagger, JWT, Mysql 8.0, JAVA 11
+
+git Repo : https://github.com/hyujikoh/wanted-pre-onboarding-backend
+swagger API : http://localhost:8010/swagger-ui/index.html
+
+DB ERD Diagram 
+
+![img.png](img.png)
+
+구현 영상 : 
