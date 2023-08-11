@@ -55,6 +55,13 @@ public class PostServiceImpl implements PostService{
     @Override
     public Post delete(PostReq postReq) {
         long id = Long.parseLong(JwtManager.getId());
+        Member member = memberRepository.findById(id).get();
+
+
+        Post post = postRepository.findById(postReq.getId()).get();
+        if(!post.getAuthor().getId().equals(member.getId())){
+            throw new BaseException(WRONG_AUTH);
+        }
 
         postRepository.deleteById(postReq.getId());
         return null;
