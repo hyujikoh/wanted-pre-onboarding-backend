@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Author : hyujikoh
@@ -96,8 +96,35 @@ public class PostTest {
     }
 
     @Test
-    public void 게시글_등록_유효하지않은_JWT() {
+    public void 게시글_등록_유효하지않은_JWT() throws Exception{
+        // Given
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
 
+        Member member = memberService.logIn(memberReq);
+
+        PostReq postReq = new PostReq().builder()
+                .subject("안녕하세요")
+                .content("상세내용입니다")
+                .build();
+
+        String wrongJwt = "wrongJwt";
+
+        // When
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+                        .header("X-ACCESS-TOKEN", wrongJwt)
+                        .characterEncoding("UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(postReq)))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message").exists()) // 예상되는 에러 메시지가 있는지 확인
+                .andExpect(jsonPath("$.message").value("유효하지 않은 JWT 입니다.")); // 예상되는 에러 메시지와 일치하는지 확인
+        long count = postService.getCount();
+
+        assertThat(count).isEqualTo(0);
+        // Then
     }
 
     @Test
