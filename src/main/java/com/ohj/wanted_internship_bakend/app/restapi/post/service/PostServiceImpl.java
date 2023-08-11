@@ -8,6 +8,8 @@ import com.ohj.wanted_internship_bakend.app.restapi.post.domain.PostReq;
 import com.ohj.wanted_internship_bakend.app.restapi.post.repository.PostRepository;
 import com.ohj.wanted_internship_bakend.app.util.JwtManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -67,6 +69,11 @@ public class PostServiceImpl implements PostService{
     @Override
     public long getCount() {
         return postRepository.count();
+    }
+
+    @Override
+    public Page<Post> getPostList(Pageable pageable) {
+        return postRepository.findAll(pageable);
     }
 
     private Post postBuilder(PostReq postReq, Member member) {
