@@ -9,4 +9,8 @@ public interface PostService {
     Post put(PostReq postReq);
 
     Post delete(PostReq postReq);
+
+    Post getPostDetail(Long postId);
+
+    long getCount();
 }

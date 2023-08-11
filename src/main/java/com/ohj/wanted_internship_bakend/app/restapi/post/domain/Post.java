@@ -29,4 +29,9 @@ public class Post {
     private String subject;
 
     private String content;
+
+    public void updateInfo(PostReq postReq) {
+        this.subject = postReq.getSubject();
+        this.content = postReq.getContent();
+    }
 }

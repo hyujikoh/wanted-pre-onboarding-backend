@@ -62,4 +62,19 @@ public class PostController {
         }
     }
 
+    /**
+     * 게시글 상세 조회
+     * @param postId
+     * @return
+     */
+    @GetMapping("/{postId}")
+    public BaseResponse<Post> getPostDetail(@PathVariable Long postId) {
+        try{
+            return new BaseResponse<>(postService.getPostDetail(postId));
+        }
+        catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 }
