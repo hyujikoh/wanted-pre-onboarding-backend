@@ -128,13 +128,115 @@ public class PostTest {
     }
 
     @Test
-    public void 게시글_수정() {
+    public void 게시글_수정() throws Exception {
+        // Given
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
+
+        Member member = memberService.logIn(memberReq);
+
+        PostReq postReq = new PostReq().builder()
+                .subject("안녕하세요")
+                .content("상세내용입니다")
+                .build();
+
+        String accessToken = member.getAccessToken();
+
+        // When
+
+
+        // 게시글 등록
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+                        .header("X-ACCESS-TOKEN", accessToken)
+                        .characterEncoding("UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(postReq)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        // 게시글 수정
+
+        PostReq postReqNew = new PostReq().builder()
+                .id(1)
+                .subject("안녕하세요")
+                .content("수정된 상세내용입니다")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("http://localhost:8010/post/write")
+                        .header("X-ACCESS-TOKEN", accessToken)
+                        .characterEncoding("UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(postReqNew)))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        long count = postService.getCount();
+
+        assertThat(count).isEqualTo(1);
 
     }
 
     @Test
-    public void 게시글_수정_유효하지않은_JWT() {
+    public void 게시글_수정_유효하지않은_JWT() throws Exception {
+        // Given
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
 
+        Member member = memberService.logIn(memberReq);
+
+
+        PostReq postReq = new PostReq().builder()
+                .subject("안녕하세요")
+                .content("상세내용입니다")
+                .build();
+
+        String accessToken = member.getAccessToken();
+
+        // When
+
+
+        // 게시글 등록
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+                        .header("X-ACCESS-TOKEN", accessToken)
+                        .characterEncoding("UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(postReq)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        // 게시글 수정
+
+        MemberReq memberReq2 = new MemberReq().builder()
+                .userEmail("Th@naver.com")
+                .password("12345678")
+                .build();
+        Member member2 = memberService.join(memberReq2);
+
+        String accessTokenMember2 = member2.getAccessToken();
+
+        PostReq postReqNew = new PostReq().builder()
+                .id(1)
+                .subject("안녕하세요")
+                .content("상세내용입니다123123")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("http://localhost:8010/post/write")
+                        .header("X-ACCESS-TOKEN", accessTokenMember2)
+                        .characterEncoding("UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(postReqNew)))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.message").exists()) // 예상되는 에러 메시지가 있는지 확인
+                .andExpect(jsonPath("$.message").value("유효하지 않은 사용자 입니다.")); // 예상되는 에러 메시지와 일치하는지 확인
+
+        long count = postService.getCount();
+
+        assertThat(count).isEqualTo(1);
     }
 
     @Test

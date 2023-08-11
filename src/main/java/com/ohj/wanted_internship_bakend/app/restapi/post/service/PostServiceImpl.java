@@ -1,5 +1,6 @@
 package com.ohj.wanted_internship_bakend.app.restapi.post.service;
 
+import com.ohj.wanted_internship_bakend.app.common.BaseException;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.Member;
 import com.ohj.wanted_internship_bakend.app.restapi.member.repository.MemberRepository;
 import com.ohj.wanted_internship_bakend.app.restapi.post.domain.Post;
@@ -10,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.ohj.wanted_internship_bakend.app.common.BaseResponseStatus.INVALID_JWT;
+import static com.ohj.wanted_internship_bakend.app.common.BaseResponseStatus.WRONG_AUTH;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +36,13 @@ public class PostServiceImpl implements PostService{
     public Post put(PostReq postReq) {
         long id = Long.parseLong(JwtManager.getId());
         Member member = memberRepository.findById(id).get();
+
+
         Post post = postRepository.findById(postReq.getId()).get();
+        if(!post.getAuthor().getId().equals(member.getId())){
+            throw new BaseException(WRONG_AUTH);
+        }
+
         post.updateInfo(postReq);
 
         postRepository.save(post);

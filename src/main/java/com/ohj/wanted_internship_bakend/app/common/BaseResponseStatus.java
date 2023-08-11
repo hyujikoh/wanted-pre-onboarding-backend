@@ -13,7 +13,9 @@ public enum BaseResponseStatus {
 
     REQUEST_ERROR(false, 4000, "입력값이 양식에 맞는지 확인해주세요."),
     EMPTY_JWT(false, 4010, "JWT를 입력해주세요."),
-    INVALID_JWT(false, 4011, "유효하지 않은 JWT 입니다."),;
+    INVALID_JWT(false, 4011, "유효하지 않은 JWT 입니다."),
+    WRONG_AUTH(false, 4012, "유효하지 않은 사용자 입니다."),;
+    ;
 
     private final boolean isSuccess;
     private final int code;
