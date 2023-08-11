@@ -38,7 +38,7 @@ public class MemberApiTest {
         TestRestTemplate rest = new TestRestTemplate();
 
         // Given
-        String url = "http://localhost:8040/join";
+        String url = "http://localhost:8040/member/join";
         MemberReq memberReq = new MemberReq().builder()
                 .userEmail("testUser@gmail.com")
                 .password("testPa1234")
@@ -58,7 +58,7 @@ public class MemberApiTest {
         TestRestTemplate rest = new TestRestTemplate();
 
         // Given
-        String url = "http://localhost:8040/join";
+        String url = "http://localhost:8040/member/join";
         MemberReq memberReq = new MemberReq().builder()
                 .userEmail("testUser")
                 .password("testPa")
@@ -79,7 +79,7 @@ public class MemberApiTest {
                 .build();
         memberService.join(joinReq);
         // Given
-        String url = "http://localhost:8040/logIn";
+        String url = "http://localhost:8040/member/logIn";
         MemberReq memberReq = new MemberReq().builder()
                 .userEmail("oh@naver.com")
                 .password("12345678")
@@ -97,7 +97,7 @@ public class MemberApiTest {
         TestRestTemplate rest = new TestRestTemplate();
 
         // Given
-        String url = "http://localhost:8040/logIn";
+        String url = "http://localhost:8040/member/logIn";
         MemberReq memberReq = new MemberReq().builder()
                 .userEmail("oh@naver.com")
                 .password("1234")
