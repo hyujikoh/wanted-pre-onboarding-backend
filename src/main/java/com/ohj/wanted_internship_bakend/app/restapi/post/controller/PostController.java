@@ -33,7 +33,7 @@ public class PostController {
     }
 
     /**
-     * 게시글 작성
+     * 게시글 수정
      * @param postReq
      * @return
      */
@@ -48,12 +48,12 @@ public class PostController {
     }
 
     /**
-     * 게시글 작성
+     * 게시글 삭제
      * @param postReq
      * @return
      */
     @DeleteMapping("/write")
-    public BaseResponse<Post> deleteWrite(@Valid @RequestBody  PostReq postReq) {
+    public BaseResponse<Post> deleteWrite(@RequestBody  PostReq postReq) {
         try{
             return new BaseResponse<>(postService.delete(postReq));
         }

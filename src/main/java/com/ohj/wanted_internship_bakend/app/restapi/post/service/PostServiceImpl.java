@@ -53,7 +53,6 @@ public class PostServiceImpl implements PostService{
     @Override
     public Post delete(PostReq postReq) {
         long id = Long.parseLong(JwtManager.getId());
-        Post post = postRepository.findById(postReq.getId()).get();
 
         postRepository.deleteById(postReq.getId());
         return null;

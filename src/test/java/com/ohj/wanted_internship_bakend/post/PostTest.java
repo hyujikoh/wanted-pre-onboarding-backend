@@ -240,7 +240,65 @@ public class PostTest {
     }
 
     @Test
-    public void 게시글_삭제() {
+    public void 게시글_삭제() throws Exception {
+
+        // Given
+        MemberReq memberReq = new MemberReq().builder()
+                .userEmail("oh@naver.com")
+                .password("12345678")
+                .build();
+
+        Member member = memberService.logIn(memberReq);
+
+        PostReq postReq = new PostReq().builder()
+                .subject("안녕하세요")
+                .content("상세내용입니다")
+                .build();
+
+        String accessToken = member.getAccessToken();
+
+        // When
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+                        .header("X-ACCESS-TOKEN", accessToken)
+                        .characterEncoding("UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(postReq)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+
+
+
+        // Then
+
+
+        long count = postService.getCount();
+
+        assertThat(count).isEqualTo(1);
+
+
+
+        PostReq postReqWillDel = new PostReq().builder()
+                .id(1)
+                .build();
+
+        // When
+        MvcResult mvcResultDelete = mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:8010/post/write")
+                        .header("X-ACCESS-TOKEN", accessToken)
+                        .characterEncoding("UTF-8")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(postReqWillDel)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+
+
+
+        // Then
+
+
+
+        assertThat(postService.getCount()).isEqualTo(0);
 
     }
 
