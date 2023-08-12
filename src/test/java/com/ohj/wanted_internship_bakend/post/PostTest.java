@@ -1,5 +1,6 @@
 package com.ohj.wanted_internship_bakend.post;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.Member;
 import com.ohj.wanted_internship_bakend.app.restapi.member.domain.MemberReq;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Desc : 서비스 로직 테스트
  */
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
@@ -44,6 +46,9 @@ public class PostTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @LocalServerPort
+    private int port;
 
     @BeforeEach
     public void beforeEach() {
@@ -113,7 +118,7 @@ public class PostTest {
         String wrongJwt = "wrongJwt";
 
         // When
-        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:"+port+"/post/write")
                         .header("X-ACCESS-TOKEN", wrongJwt)
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -148,7 +153,7 @@ public class PostTest {
 
 
         // 게시글 등록
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:"+port+"/post/write")
                         .header("X-ACCESS-TOKEN", accessToken)
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -156,15 +161,22 @@ public class PostTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(contentAsString);
+
+        int id = rootNode.path("result").path("id").asInt();
+
         // 게시글 수정
 
         PostReq postReqNew = new PostReq().builder()
-                .id(1)
+                .id(id)
                 .subject("안녕하세요")
                 .content("수정된 상세내용입니다")
                 .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("http://localhost:8010/post/write")
+        mockMvc.perform(MockMvcRequestBuilders.put("http://localhost:"+port+"/post/write")
                         .header("X-ACCESS-TOKEN", accessToken)
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -201,7 +213,7 @@ public class PostTest {
 
 
         // 게시글 등록
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:"+port+"/post/write")
                         .header("X-ACCESS-TOKEN", accessToken)
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -225,7 +237,7 @@ public class PostTest {
                 .content("상세내용입니다123123")
                 .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.put("http://localhost:8010/post/write")
+        mockMvc.perform(MockMvcRequestBuilders.put("http://localhost:"+port+"/post/write")
                         .header("X-ACCESS-TOKEN", accessTokenMember2)
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -258,7 +270,7 @@ public class PostTest {
         String accessToken = member.getAccessToken();
 
         // When
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8010/post/write")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:"+port+"/post/write")
                         .header("X-ACCESS-TOKEN", accessToken)
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -267,8 +279,13 @@ public class PostTest {
                 .andReturn();
 
 
+        // 게시글 삭제
+        String contentAsString = mvcResult.getResponse().getContentAsString();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(contentAsString);
 
+        int id = rootNode.path("result").path("id").asInt();
         // Then
 
 
@@ -279,11 +296,11 @@ public class PostTest {
 
 
         PostReq postReqWillDel = new PostReq().builder()
-                .id(1)
+                .id(id)
                 .build();
 
         // When
-        MvcResult mvcResultDelete = mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:8010/post/write")
+        MvcResult mvcResultDelete = mockMvc.perform(MockMvcRequestBuilders.delete("http://localhost:"+port+"/post/write")
                         .header("X-ACCESS-TOKEN", accessToken)
                         .characterEncoding("UTF-8")
                         .contentType(MediaType.APPLICATION_JSON)

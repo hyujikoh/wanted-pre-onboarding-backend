@@ -37,6 +37,7 @@
 기술 스택 : Spring boot 2.7.6, JPA, Hibernate, Swagger, JWT, Mysql 8.0, JAVA 11
 
 git Repo : https://github.com/hyujikoh/wanted-pre-onboarding-backend
+
 swagger API : http://localhost:8010/swagger-ui/index.html
 
 DB ERD Diagram 
@@ -44,3 +45,5 @@ DB ERD Diagram
 ![img.png](img.png)
 
 구현 영상 : 
+
+구현 방식에 대한 설명
