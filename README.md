@@ -2,7 +2,26 @@
 
 성명 : 오현직
 
-작업 일자
+
+기술 스택 : Spring boot 2.7.6, JPA, Hibernate, Swagger, JWT, Mysql 8.0, JAVA 11
+
+git Repo : https://github.com/hyujikoh/wanted-pre-onboarding-backend
+
+swagger API : http://localhost:8010/swagger-ui/index.html
+
+DB ERD Diagram 
+
+![img.png](img.png)
+
+구현 영상 : (링크 삽입)
+
+구현 방식에 대한 설명
+
+
+<details>
+<summary>👻 작업 일자 👻</summary>
+<div markdown="1">
+
 8/7
 1. 프로젝트 생성
 2. 도메인 템플릿 구축
@@ -23,27 +42,9 @@
 8/11
 1. 게시글 CRUD 작성 완료(테스트 코드 포함)
 
+8/12
+1. 테스트 코드 리팩토링
+2. 단위, 통합 테스트 완료
 
-작업 예정
-1. 로그인 시 jwt 토큰 발급 로직 구현(완료)
-2. 인터셉터 기반 로그인 여부 체크(jwt 토큰 여부 및 파싱)(완료)
-3. 인터셉터를 통한 로그인 (완료)
-4. CRUD 기반 게시판 글 작성
-5. JWT 오류 발생 경우 에러 던지기(완료)
-
-
-
-
-기술 스택 : Spring boot 2.7.6, JPA, Hibernate, Swagger, JWT, Mysql 8.0, JAVA 11
-
-git Repo : https://github.com/hyujikoh/wanted-pre-onboarding-backend
-
-swagger API : http://localhost:8010/swagger-ui/index.html
-
-DB ERD Diagram 
-
-![img.png](img.png)
-
-구현 영상 : 
-
-구현 방식에 대한 설명
+</div>
+</details>
