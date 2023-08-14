@@ -52,9 +52,25 @@ DB ERD Diagram
 
 구현 영상 : (링크 삽입)
 
-## 4 구현 방법 및 이유에 대한 간략한 설명
+## 4 app 실행방법
 
+- 전제 조건
+  - db/db.sql 파일에 있는 sql 문 실행하여 테이블 생성
+  - shell 스크립트 기반일 경우, java 11 이 있어야한다.
+  - IDE(EX. 인텔리제이) 기반 일 경우, java 11 이 적용되어야한다. 
 
+1. shell 스크립트로 실행
+
+```shell
+./gradelw clean build 
+java -jar build/libs/wanted_internship_bakend-0.0.1-SNAPSHOT.jar
+```
+
+2. IDE 환경에서 실행(인텔리제이 기준 실행)
+
+그냥 run 을 돌려서 실행한다. 이때 java 11이 적용이 되어야한다!!!
+
+## 5 구현 방법 및 이유에 대한 간략한 설명
 
 이번 과제에서 작성한 api 요구사항은 각각 member, post 도메인에 각각 1개의 api 를 예시로 설명을 하겠습니다. 
 
@@ -75,6 +91,7 @@ public class MemberController {
 
 3. 이번 인증 인가 부분에는 스프링 시큐리티를 적용하지 않고, jwtManager 라는 클래스를 통해 토큰을 발급하는 로직을 작성하였습니다.
 실제 해당 로직에서 토큰을 발급 할 경우, 유효기간을 3년으로 지정하였습니다. 
+
 ```java
 public class JwtManager {
 
@@ -98,6 +115,7 @@ public class JwtManager {
     }
 }
 ```
+
 4. 원래와 같으면 토큰이 탈취되는 경우를 대비하여, accessToken의 유효기간을 짧게 하고, refreshToken 을 통하여 보안 이슈를 해결하는 방법이 있지만, 
 해당 과제에서는 오직 accessToken 만 발급하는 로직으로 작성하였습니다.
 
@@ -121,6 +139,7 @@ public class PostServiceImpl implements PostService {
 ```
 2. 위와 같은 write 로직에서 `JwtManager.getId()` 를 통해 long 타입의 데이터를 추출을 합니다. 추출하는 로직은 다음과 같습니다. 
 만일 유효하지 않은 토큰 값인 경우, enum 으로 처리한 vaildation 값을 통해서 에러메시지를 res 합니다.
+
 ```java
 public class JwtManager {
     public static String getId() {
