@@ -12,21 +12,30 @@ wanted_internship_bakend
   > build
   > gradle
   > db : db 테이블 초기화 sql 정보 가지고 있는 디렉토리
-  > src.main
-    > generated : QueryDsl 사용을 위한 QClass 들이 build 되는 디렉토리.(현재는 QueryDSL 사용 안함)
-    > java
-      > com.ohj.wanted_internship_backend
-        WantedInternshipBakendApplication
-        > app
-          > common : 범용적으로 사용되는 컴포넌트가 작성되어있는 패키지
-          > restapi
-            > member
-            > post
-          > utils : jwt, 패스워드 생성 컴포넌트가 작성된 패키지
-        AtfleeApplication
-    > resources
-      application-{profile}.yml : 스프링 프로필별 프로젝트 설정 파일
-      application.yml :빌드시 꼭 포함돼야하는 설정 파일
+  > src
+    > main
+      > generated : QueryDsl 사용을 위한 QClass 들이 build 되는 디렉토리.(현재는 QueryDSL 사용 안함)
+      > java
+        > com.ohj.wanted_internship_backend
+          WantedInternshipBakendApplication
+          > app
+            > common : 범용적으로 사용되는 컴포넌트가 작성되어있는 패키지
+            > restapi
+              > member
+              > post
+            > utils : jwt, 패스워드 생성 컴포넌트가 작성된 패키지
+          AtfleeApplication
+      > resources
+        application-{profile}.yml : 스프링 프로필별 프로젝트 설정 파일
+        application.yml :빌드시 꼭 포함돼야하는 설정 파일
+    > test.java.com.ohj.wanted_internship_backend : 테스트 패키지!!
+      > member 
+        MemberApiTest.java : api 단위 테스트
+        MemberServiceTest.java : 서비스 로직 테스트
+        
+      > post
+        PostTest.java : post 도메인 테스트 
+    
 ```
 
 ## 3. 상세 정보
