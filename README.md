@@ -32,7 +32,7 @@ wanted_internship_bakend
 ## 3. 상세 정보
 
 과제 API 를 구성하고 있는 세부적인 패키지 구조는 아래와 같다.
-- domainname(ex. post, member)
+- domain name(ex. post, member)
   - controller : 해당 도메인의 api 진입점 역할을 하는 controller를 작성 함
   - service : 해당 도메인의 비즈니스 로직에 대한 규격을 작성한 인터페이스
   - serviceImpl : 해당 도메인의 상세한 비즈니스 로직을 작성한 Class
@@ -118,6 +118,84 @@ public class JwtManager {
 
 4. 원래와 같으면 토큰이 탈취되는 경우를 대비하여, accessToken의 유효기간을 짧게 하고, refreshToken 을 통하여 보안 이슈를 해결하는 방법이 있지만, 
 해당 과제에서는 오직 accessToken 만 발급하는 로직으로 작성하였습니다.
+
+### **회원 가입 API**
+
+#### **요청**
+
+- Method: POST
+- URL: **`/join`**
+- Content-Type: **`application/json`**
+
+#### Request Body
+
+```json
+{
+    "userEmail": "oh@naver.com",
+    "password": "12345678"
+}
+
+```
+
+#### **응답**
+
+- Status Code: 200 OK
+- Content-Type: **`application/json`**
+
+#### Response Body
+
+```json
+{
+    "isSuccess": true,
+    "code": 1000,
+    "message": "요청에 성공하였습니다.",
+    "result": {
+        "id": 2,
+        "userEmail": "oh@naver.com",
+        "accessToken": "[token value]"
+    }
+}
+
+```
+
+
+### **로그인 API**
+
+#### **요청**
+
+- Method: POST
+- URL: **`/logIn`**
+- Content-Type: **`application/json`**
+
+#### Request Body
+
+```json
+{
+    "userEmail": "oh@naver.com",
+    "password": "12345678"
+}
+
+```
+
+#### **응답**
+
+- Status Code: 200 OK
+- Content-Type: **`application/json`**
+
+#### Response Body
+
+```json
+{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다.",
+  "result": {
+    "id": 2,
+    "userEmail": "oh@naver.com",
+    "accessToken": "[token value]"
+  }
+}
+```
 
 ### post
 1. post 로직에서는 생성, 수정, 삭제 같은 api 요청시에 header 에 있는 `X-ACCESS-TOKEN` 을 추출 한 다음 파싱 하여 토큰의 유효성을 확인한다.
