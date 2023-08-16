@@ -46,6 +46,8 @@ git Repo : https://github.com/hyujikoh/wanted-pre-onboarding-backend
 
 swagger API : http://localhost:8010/swagger-ui/index.html
 
+데모영상 : https://drive.google.com/file/d/1v2PHlEum8m_LxD-4G-CZuw5pm7bnjCc2/view?usp=drive_link
+
 DB ERD Diagram 
 
 ![img.png](img.png)
