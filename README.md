@@ -124,7 +124,7 @@ public class JwtManager {
 #### **요청**
 
 - Method: POST
-- URL: **`/join`**
+- URL: **`member/join`**
 - Content-Type: **`application/json`**
 
 #### Request Body
@@ -164,7 +164,7 @@ public class JwtManager {
 #### **요청**
 
 - Method: POST
-- URL: **`/logIn`**
+- URL: **`member/logIn`**
 - Content-Type: **`application/json`**
 
 #### Request Body
@@ -259,6 +259,295 @@ public class JwtManager {
 }
 
 ```
+
+### **글 생성 API**
+
+#### **요청**
+
+- Method: POST
+- URL: **`/post/write`**
+- Headers:
+  - **`X-ACCESS-TOKEN`**: 사용자의 액세스 토큰
+- Content-Type: **`application/json`**
+
+#### Request Body
+
+```json
+
+{
+    "subject": "this is subject",
+    "content": "this is content"
+}
+
+```
+
+#### **응답**
+
+- Status Code: 200 OK
+- Content-Type: **`application/json`**
+
+#### Response Body
+
+```json
+
+{
+    "isSuccess": true,
+    "code": 1000,
+    "message": "요청에 성공하였습니다.",
+    "result": {
+        "author": {
+            "id": 2,
+            "userEmail": "oh@naver.com",
+            "accessToken": null},
+        "id": 1,
+        "subject": "this is subject",
+        "content": "this is content"
+    }
+}
+
+```
+
+
+### **글 수정 API**
+
+#### **요청**
+
+- Method: PUT
+- URL: **`/post/write`**
+- Headers:
+  - **`X-ACCESS-TOKEN`**: 사용자의 액세스 토큰
+- Content-Type: **`application/json`**
+
+#### Request Body
+
+```json
+
+{
+  "id" : 1,
+  "subject" : "fix subject",
+  "content" : "fix content"
+}
+
+```
+
+#### **응답**
+
+- Status Code: 200 OK
+- Content-Type: **`application/json`**
+
+#### Response Body
+
+```json
+
+{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다.",
+  "result": {
+    "author": {
+      "id": 2,
+      "userEmail": "oh@naver.com",
+      "accessToken": null
+    },
+    "id": 1,
+    "subject": "fix subject",
+    "content": "fix content"
+  }
+}
+
+```
+
+
+### **글 삭제 API**
+
+#### **요청**
+
+- Method: DELETE
+- URL: **`/post/write`**
+- Headers:
+  - **`X-ACCESS-TOKEN`**: 사용자의 액세스 토큰
+- Content-Type: **`application/json`**
+
+#### Request Body
+
+```json
+{
+  "id" : 1
+}
+
+```
+
+#### **응답**
+
+- Status Code: 200 OK
+- Content-Type: **`application/json`**
+
+#### Response Body
+
+```json
+
+{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다."
+}
+
+```
+
+### **글 상세조회 API**
+
+#### **요청**
+
+- Method: GET
+- URL: **`/post/{postId}`**
+- Content-Type: **`application/json`**
+
+#### Request Body
+
+```json
+
+```
+
+#### **응답**
+
+- Status Code: 200 OK
+- Content-Type: **`application/json`**
+
+#### Response Body
+
+```json
+
+{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다.",
+  "result": {
+    "author": {
+      "id": 2,
+      "userEmail": "oh@naver.com",
+      "accessToken": null
+    },
+    "id": 1,
+    "subject": "fix subject",
+    "content": "fix content"
+  }
+}
+
+```
+
+### **게시글 페이징 조회  API**
+
+#### **요청**
+
+- Method: GET
+- URL: **`/post/list`**
+- Content-Type: **`application/json`**
+- params 
+  - page(int) : 페이지 수
+  - size(int) : 페이지당 게시글 
+#### Request Body
+
+```json
+
+```
+
+#### **응답**
+
+- Status Code: 200 OK
+- Content-Type: **`application/json`**
+
+#### Response Body
+
+```json
+
+{
+  "isSuccess": true,
+  "code": 1000,
+  "message": "요청에 성공하였습니다.",
+  "result": {
+    "content": [
+      {
+        "author": {
+          "id": 2,
+          "userEmail": "oh@naver.com",
+          "accessToken": null
+        },
+        "id": 5,
+        "subject": "this is subject45",
+        "content": "this is content45"
+      },
+      {
+        "author": {
+          "id": 2,
+          "userEmail": "oh@naver.com",
+          "accessToken": null
+        },
+        "id": 4,
+        "subject": "this is subject32",
+        "content": "this is content32"
+      },
+      {
+        "author": {
+          "id": 2,
+          "userEmail": "oh@naver.com",
+          "accessToken": null
+        },
+        "id": 3,
+        "subject": "this is subject2",
+        "content": "this is content2"
+      },
+      {
+        "author": {
+          "id": 2,
+          "userEmail": "oh@naver.com",
+          "accessToken": null
+        },
+        "id": 2,
+        "subject": "this is subject1",
+        "content": "this is content1"
+      },
+      {
+        "author": {
+          "id": 2,
+          "userEmail": "oh@naver.com",
+          "accessToken": null
+        },
+        "id": 1,
+        "subject": "fix subject",
+        "content": "fix content"
+      }
+    ],
+    "pageable": {
+      "sort": {
+        "empty": false,
+        "sorted": true,
+        "unsorted": false
+      },
+      "offset": 5,
+      "pageSize": 5,
+      "pageNumber": 1,
+      "paged": true,
+      "unpaged": false
+    },
+    "last": true,
+    "totalPages": 2,
+    "totalElements": 10,
+    "size": 5,
+    "number": 1,
+    "sort": {
+      "empty": false,
+      "sorted": true,
+      "unsorted": false
+    },
+    "first": false,
+    "numberOfElements": 5,
+    "empty": false
+  }
+}
+```
+
+
+
 
 <details>
 <summary>👻 작업 일자 👻</summary>
